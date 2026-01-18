@@ -83,27 +83,7 @@ in {
 
     # Enable i2c
     hardware.i2c.enable = true;
-
-    # Add groups for numpad
-    users.groups = {
-      uinput = { };
-      input = { };
-      i2c = { };
-    };
-
-    # Add root to the necessary groups
-    users.users.root.extraGroups = [ "i2c" "input" "uinput" ];
-
-    # Add the udev rule to set permissions for uinput and i2c-dev
-    services.udev.extraRules = ''
-      # Set uinput device permissions
-      KERNEL=="uinput", GROUP="uinput", MODE="0660"
-      # Set i2c-dev permissions
-      SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
-    '';
-
-    # Load specific kernel modules
-    boot.kernelModules = [ "uinput" "i2c-dev" ];
+    hardware.uinput.enable = true;
 
     systemd.services.asus-numberpad-driver = {
       description = "Asus NumberPad Driver";
@@ -113,7 +93,7 @@ in {
       serviceConfig = {
         Type = "simple";
         ExecStart =
-          "${defaultPackage}/share/asus-numberpad-driver/numberpad.py ${cfg.layout} ${configDir}";
+          "${lib.getExe defaultPackage} ${cfg.layout} ${configDir}";
         StandardOutput = null;
         StandardError = null;
         Restart = "on-failure";
