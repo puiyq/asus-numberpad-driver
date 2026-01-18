@@ -1,11 +1,21 @@
-{ lib
-, python313Packages
-, pkgs
+{
+  lib,
+  python3Packages,
+  makeWrapper,
+  xorg,
+  i2c-tools,
 }:
 
-let
-  # Define the Python packages required
-  pythonPackages = pkgs.python313.withPackages (ps: with ps; [
+python3Packages.buildPythonApplication rec {
+  pname = "asus-numberpad-driver";
+  version = "6.8.3";
+  pyproject = false;
+
+  src = ../.;
+
+  nativeBuildInputs = [ makeWrapper ];
+
+  propagatedBuildInputs = with python3Packages; [
     numpy
     libevdev
     xlib
@@ -13,58 +23,47 @@ let
     pyasyncore
     pywayland
     xkbcommon
-    systemd-python
     xcffib
     python-periphery
-  ]);
-in
-python313Packages.buildPythonPackage {
-  pname = "asus-numberpad-driver";
-  version = "6.8.3";
-  src = ../.;
-
-  format = "other";
-
-  propagatedBuildInputs = with pkgs; [
-    ibus
-    libevdev
-    curl
-    xorg.xinput
-    i2c-tools
-    libxml2
-    libxkbcommon
-    libgcc
-    gcc
-    pythonPackages  # Python dependencies already include python313
   ];
+
+  dontBuild = true;
+  dontConfigure = true;
+
+  installPhase = ''
+    runHook preInstall
+
+    # Install layouts as Python module
+    install -Dm644 layouts/*.py -t $out/${python3Packages.python.sitePackages}/layouts
+
+    # Install data files
+    install -Dm644 laptop_numberpad_layouts laptop_touchpad_numberpad_layouts.csv \
+      -t $out/share/asus-numberpad-driver
+
+    # Install executable
+    install -Dm755 numberpad.py $out/bin/asus-numberpad-driver
+
+    runHook postInstall
+  '';
+
+  postFixup = ''
+    wrapProgram $out/bin/asus-numberpad-driver \
+      --prefix PATH : "${
+        lib.makeBinPath [
+          xorg.xinput
+          i2c-tools
+        ]
+      }"
+  '';
 
   doCheck = false;
 
-  # Skip build and just focus on copying files, no setuptools required
-  buildPhase = ''
-    echo "Skipping build phase since there's no setup.py"
-  '';
-
-  # Install files for driver and layouts
-  installPhase = ''
-    mkdir -p $out/share/asus-numberpad-driver
-
-    # Copy the driver script
-    cp numberpad.py $out/share/asus-numberpad-driver/
-
-    # Copy layouts directory if it exists, and remove __pycache__ if present
-    if [ -d layouts ]; then
-      cp -r layouts $out/share/asus-numberpad-driver/
-      rm -rf $out/share/asus-numberpad-driver/layouts/__pycache__
-    fi
-  '';
-
   meta = {
+    description = "Linux driver for NumberPad(2.0) on Asus laptops";
     homepage = "https://github.com/asus-linux-drivers/asus-numberpad-driver";
-    description = "Linux driver for NumberPad(2.0) on Asus laptops.";
-    license = lib.licenses.gpl2;
+    license = lib.licenses.gpl2Only;
     platforms = lib.platforms.linux;
-    maintainers = with lib.maintainers; [asus-linux-drivers];
-    mainProgram = "numberpad.py";
+    maintainers = [ ];
+    mainProgram = "asus-numberpad-driver";
   };
 }
