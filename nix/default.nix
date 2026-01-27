@@ -2,11 +2,11 @@
   lib,
   python3Packages,
   makeWrapper,
-  xorg,
+  xinput,
   i2c-tools,
 }:
 
-python3Packages.buildPythonApplication rec {
+python3Packages.buildPythonApplication {
   pname = "asus-numberpad-driver";
   version = "6.8.5";
   pyproject = false;
@@ -26,18 +26,15 @@ python3Packages.buildPythonApplication rec {
     python-periphery
   ];
 
-  dontBuild = true;
   dontConfigure = true;
+  dontBuild = true;
+  doCheck = false;
 
   installPhase = ''
     runHook preInstall
 
     # Install layouts as Python module
     install -Dm644 layouts/*.py -t $out/${python3Packages.python.sitePackages}/layouts
-
-    # Install data files
-    install -Dm644 laptop_numberpad_layouts laptop_touchpad_numberpad_layouts.csv \
-      -t $out/share/asus-numberpad-driver
 
     # Install executable
     install -Dm755 numberpad.py $out/bin/asus-numberpad-driver
@@ -49,13 +46,11 @@ python3Packages.buildPythonApplication rec {
     wrapProgram $out/bin/asus-numberpad-driver \
       --prefix PATH : "${
         lib.makeBinPath [
-          xorg.xinput
+          xinput
           i2c-tools
         ]
       }"
   '';
-
-  doCheck = false;
 
   meta = {
     description = "Linux driver for NumberPad(2.0) on Asus laptops";
