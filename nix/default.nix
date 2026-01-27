@@ -24,6 +24,7 @@ python3Packages.buildPythonApplication {
     xkbcommon
     xcffib
     python-periphery
+    pywayland
   ];
 
   dontConfigure = true;
