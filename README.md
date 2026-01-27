@@ -4,7 +4,7 @@
 ![Maintainer](https://img.shields.io/badge/maintainer-ldrahnik-blue)
 ![Contributor](https://img.shields.io/badge/contributor-kamack33-blue)
 [![GitHub Release](https://img.shields.io/github/release/asus-linux-drivers/asus-numberpad-driver.svg?style=flat)](https://github.com/asus-linux-drivers/asus-numberpad-driver/releases)
-[![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-numberpad-driver/v6.8.3.svg)](https://GitHub.com/asus-linux-drivers/asus-numberpad-driver/commit/)
+[![GitHub commits](https://img.shields.io/github/commits-since/asus-linux-drivers/asus-numberpad-driver/v6.8.4.svg)](https://GitHub.com/asus-linux-drivers/asus-numberpad-driver/commit/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/asus-linux-drivers/asus-numberpad-driver.svg)](https://GitHub.com/asus-linux-drivers/asus-numberpad-driver/issues?q=is%3Aissue+is%3Aclosed)
 [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/asus-linux-drivers/asus-numberpad-driver.svg)](https://github.com/asus-linux-drivers/asus-numberpad-driver/compare)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20about-anything-1abc9c.svg)](https://github.com/asus-linux-drivers/asus-numberpad-driver/issues/new/choose)
@@ -57,14 +57,14 @@ keyboard shortcuts - for example in [my toggling script](https://github.com/asus
 
 ## Installation
 
-Get the latest dev version using `git`:
+Get the latest stable or dev version using `git` (**recommended**):
 
 ```bash
 $ git clone https://github.com/asus-linux-drivers/asus-numberpad-driver
 $ cd asus-numberpad-driver
 # now you are using master branch with the latest changes which may be not stable
 # jump to the latest release of stable version:
-$ git checkout v6.8.3
+$ git checkout v6.8.5
 ```
 
 or download the latest release (stable version) from [the release page](https://github.com/asus-linux-drivers/asus-numberpad-driver/releases), extract and install for current user and current Python3 ([How to install the driver with specific Python3 version using pyenv?](#faq)):
@@ -124,7 +124,7 @@ By installing this rule can be activated power supply saver every time when the 
 $ bash install_power_supply_saver.sh
 ```
 
-or an available package on [AUR](https://aur.archlinux.org/packages?O=0&SeB=nd&K=asus-numberpad-driver&outdated=&SB=p&SO=d&PP=50&submit=Go) (replace `asus-numberpad-driver` with one of the available models, e.g. `asus-numberpad-driver-ux433fa-git`)
+or an available package on [AUR](https://aur.archlinux.org/packages?O=0&SeB=nd&K=asus-numberpad-driver&outdated=&SB=p&SO=d&PP=50&submit=Go) (maintained by @[kamack](https://github.com/kamack38)) (replace `asus-numberpad-driver` with one of the available models, e.g. `asus-numberpad-driver-ux433fa-git`)
 
 ```bash
 $ paru -S asus-numberpad-driver-${model}-git

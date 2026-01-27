@@ -8,7 +8,7 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "asus-numberpad-driver";
-  version = "6.8.3";
+  version = "6.8.5";
   pyproject = false;
 
   src = ../.;
@@ -21,7 +21,6 @@ python3Packages.buildPythonApplication rec {
     xlib
     pyinotify
     pyasyncore
-    pywayland
     xkbcommon
     xcffib
     python-periphery
